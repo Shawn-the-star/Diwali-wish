@@ -47,12 +47,12 @@ $(function () {
 		};
 
 		self.createParticles = function (x, y, hue) {
-			var audio = document.getElementById('audio1');
-			if (audio.paused) {
-				audio.play();
-			} else {
-				audio.currentTime = 0
-			}
+			// var audio = document.getElementById('audio1');
+			// if (audio.paused) {
+			// 	audio.play();
+			// } else {
+			// 	audio.currentTime = 0
+			// }
 			var countdown = self.partCount;
 			while (countdown--) {
 				var newParticle = {
@@ -326,5 +326,9 @@ $(function () {
 
 
 	var audioBg = document.getElementById('bg-sound');
+
 	audioBg.volume = 0.2;
+	if (audioBg.paused) {
+		audioBg.play();
+	}
 });
