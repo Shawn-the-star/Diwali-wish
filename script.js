@@ -324,4 +324,7 @@ $(function () {
 		e.preventDefault();
 	});
 
+
+	var audioBg = document.getElementById('bg-sound');
+	audioBg.volume = 0.2;
 });
