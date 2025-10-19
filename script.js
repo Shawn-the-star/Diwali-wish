@@ -1,5 +1,7 @@
 $(function () {
 
+
+
 	var Fireworks = function () {
 
 		var self = this;
@@ -9,6 +11,11 @@ $(function () {
 
 		self.init = function () {
 			self.canvas = document.createElement('canvas');
+			$(document.body).append(self.canvas);
+			self.canvas.style.position = 'fixed';
+			self.canvas.style.top = 0;
+			self.canvas.style.left = 0;
+			self.canvas.style.zIndex = 0; // Push it behind the start screen
 			self.canvas.width = self.cw = $(window).innerWidth();
 			self.canvas.height = self.ch = $(window).innerHeight();
 			self.particles = [];
@@ -328,7 +335,28 @@ $(function () {
 	var audioBg = document.getElementById('bg-sound');
 
 	audioBg.volume = 0.2;
-	if (audioBg.paused) {
-		audioBg.play();
-	}
+
+	document.getElementById('start-btn').addEventListener('click', () => {
+		audioBg.play().catch(err => console.error(err));
+		const startScreen = document.getElementById('start-screen');
+		if (startScreen) {
+			// Ensure a transition is set, force reflow, then fade out
+			startScreen.style.transition = 'opacity 600ms ease';
+			startScreen.offsetWidth; // force reflow
+			startScreen.style.opacity = '0';
+			startScreen.addEventListener('transitionend', function handler(e) {
+				if (e.propertyName === 'opacity') {
+					startScreen.style.display = 'none';
+					startScreen.removeEventListener('transitionend', handler);
+				}
+			});
+		}
+
+		// Optional: Start fireworks at center
+		for (let i = 0; i < 3; i++) {
+			const x = Math.random() * window.innerWidth * 2 / 3 + window.innerWidth / 6;
+			const y = Math.random() * window.innerHeight * 2 / 3 + window.innerHeight / 6;
+			fworks.createFireworks(x, window.innerHeight, x, y);
+		}
+	});
 });
